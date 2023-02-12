@@ -2,27 +2,40 @@ pipeline {
     agent any
 
     stages {
+    		stage('clone'){
+          steps{
+            checkout scmGit(
+                      branches: [[name: 'marie']],
+                      userRemoteConfigs: [[credentialsId:  'my-ssh-private-key-id',
+                      url: 'https://github.com/CeeyIT-Solutions/MID-CLASS-PROJECT2.git']]
+                    )
+          }
+        }
+        
         stage('Initialize') {
             steps {
                 echo 'Initializing.....'
-		sh 'mvn initialize'
+								sh 'mvn initialize'
             }
         }
-	stage('Buiding') {
+        
+				stage('Buiding') {
             steps {
                 echo 'Building.....'
-		sh 'mvn clean package'
+								sh 'mvn clean package'
             }
         }
         stage('Test') {
             steps {
                 echo 'Testing.....'
-		sh '/usr/share/maven/bin/mvn test'
+								sh 'mvn test'
             }
         }
+        
         stage('Delopy') {
             steps {
                 echo 'Deploying....'
+                sh "ansible-playbook deploy.yml -i hosts.ini"
             }
         }
     }
