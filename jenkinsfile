@@ -1,33 +1,39 @@
 pipeline {
-    agent any
+	agent any
 
-    stages {
-  
-        stage('Initialize') {
-            steps {
-                echo 'Initializing.....'
-								sh 'mvn initialize'
-            }
-        }
-        
-				stage('Buiding') {
-            steps {
-                echo 'Building.....'
-								sh 'mvn clean package'
-            }
-        }
-        stage('Test') {
-            steps {
-                echo 'Testing.....'
-								sh 'mvn test'
-            }
-        }
-        
-        stage('Delopy') {
-            steps {
-                echo 'Deploying....'
-                sh "ansible-playbook deploy.yml -i hosts.ini"
-            }
-        }
-    }
+		stages {
+
+			stage('Initialize') {
+				steps {
+					echo 'Initializing.....'
+						sh 'mvn initialize'
+				}
+			}
+
+			stage('Buiding') {
+				steps {
+					echo 'Building.....'
+						sh 'mvn clean package'
+				}
+			}
+			stage('Test') {
+				steps {
+					echo 'Testing.....'
+						sh 'mvn test'
+				}
+			}
+
+			stage('Delopy') {
+				steps {
+					echo 'Deploying....'
+					ansiblePlaybook colorized: true,
+  credentialsId: 'ssh-jenkins',
+  installation: 'ansible',
+  inventory: 'hosts.ini',
+  playbook: 'deploy.yml',
+  sudo: true,
+  sudoUser: 'ec2-user'
+				}
+			}
+		}
 }
