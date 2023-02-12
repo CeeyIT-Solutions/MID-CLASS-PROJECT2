@@ -26,7 +26,7 @@ pipeline {
 			stage('Delopy') {
 				steps {
 					echo 'Deploying....'
-					ansiblePlaybook become: true, becomeUser: 'ec2-user', credentialsId: 'ssh-jenkins', inventory: 'hosts.ini', playbook: 'deploy.yml'
+					ansiblePlaybook become: true, becomeUser: 'ubunut', credentialsId: 'ssh-jenkins', inventory: 'hosts.ini', playbook: 'deploy.yml'
   
 				}
 			}
