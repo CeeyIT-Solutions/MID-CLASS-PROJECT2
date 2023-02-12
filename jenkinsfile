@@ -2,16 +2,7 @@ pipeline {
     agent any
 
     stages {
-    		stage('clone'){
-          steps{
-            checkout scmGit(
-                      branches: [[name: 'marie']],
-                      userRemoteConfigs: [[credentialsId:  'my-ssh-private-key-id',
-                      url: 'https://github.com/CeeyIT-Solutions/MID-CLASS-PROJECT2.git']]
-                    )
-          }
-        }
-        
+  
         stage('Initialize') {
             steps {
                 echo 'Initializing.....'
